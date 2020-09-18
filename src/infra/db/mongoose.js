@@ -10,7 +10,7 @@ exports.connectToMongoose = async ({ ENV }) => {
     mongooseConnection.Promise = global.Promise;
     mongooseConnection.set('useFindAndModify', true);
 
-    return { mongooseConnection };
+    return { mongoose: mongooseConnection };
   } catch (mongooseConnectionError) {
     console.log(mongooseConnectionError);
     throw new Error('Erro ao se conectar com mongoose');
