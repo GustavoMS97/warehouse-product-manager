@@ -4,7 +4,8 @@
   "description": "Projeto para gerenciar depositos e produtos",
   "main": "src/application.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/application.js",
+    "dev": "nodemon src/application.js"
   },
   "repository": {
     "type": "git",
@@ -25,19 +26,19 @@
   },
   "homepage": "https://github.com/GustavoMS97/warehouse-product-manager#readme",
   "dependencies": {
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "joi": "^17.2.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.6"
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "joi": "17.2.1",
+    "jsonwebtoken": "8.5.1",
+    "mongoose": "5.10.6"
   },
   "devDependencies": {
-    "eslint": "^7.9.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "nodemon": "^2.0.4",
-    "prettier": "^2.1.2"
+    "eslint": "7.9.0",
+    "eslint-config-airbnb-base": "14.2.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-import": "2.22.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "nodemon": "2.0.4",
+    "prettier": "2.1.2"
   }
 }
