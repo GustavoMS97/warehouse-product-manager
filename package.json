@@ -1,0 +1,43 @@
+{
+  "name": "warehouse-product-manager",
+  "version": "1.0.0",
+  "description": "Projeto para gerenciar depositos e produtos",
+  "main": "src/application.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GustavoMS97/warehouse-product-manager.git"
+  },
+  "keywords": [
+    "warehouse",
+    "depósito",
+    "product",
+    "produto",
+    "managing",
+    "gerenciamento"
+  ],
+  "author": "Gustavo Santos, Alexandre Borges e Luiz Eduardo Oku",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/GustavoMS97/warehouse-product-manager/issues"
+  },
+  "homepage": "https://github.com/GustavoMS97/warehouse-product-manager#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "joi": "^17.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.6"
+  },
+  "devDependencies": {
+    "eslint": "^7.9.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2"
+  }
+}
