@@ -1,2 +1,3 @@
 # warehouse-product-manager
-Projeto para gerenciar depositos e produtos
+
+Projeto para gerenciar filiais, locais/centros, depositos e seus produtos em estoque.
