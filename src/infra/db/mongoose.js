@@ -7,7 +7,6 @@ exports.connectToMongoose = async ({ ENV }) => {
       useUnifiedTopology: true,
     });
     mongooseConnection.Promise = global.Promise;
-    mongooseConnection.set('useFindAndModify', true);
 
     return { mongoose: mongooseConnection };
   } catch (mongooseConnectionError) {
