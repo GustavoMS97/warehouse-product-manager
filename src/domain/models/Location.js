@@ -14,7 +14,7 @@ exports.LocationFactory = ({ mongoose } = {}) => {
       type: Date,
       default: Date.now,
     },
-  }).index({ name: 1 });
+  });
   const Location = mongoose.model('Location', LocationSchema);
 
   return { Location };

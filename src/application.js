@@ -12,6 +12,9 @@ const { createBranchRouteFactory } = require('./infra/api/routes/create-branch-r
 const { createLocationRouteFactory } = require('./infra/api/routes/create-location-route');
 
 const { routerFactory } = require('./infra/api/router');
+const { WarehouseFactory } = require('./domain/models/Warehouse');
+const { createWarehouseFactory } = require('./domain/services/create-warehouse');
+const { createWarehouseRouteFactory } = require('./infra/api/routes/create-warehouse-route');
 
 const application = async () => {
   try {
@@ -23,13 +26,16 @@ const application = async () => {
     const { mongoose } = await connectToMongoose({ ENV });
     const { Branch } = BranchFactory({ mongoose });
     const { Location } = LocationFactory({ mongoose });
+    const { Warehouse } = WarehouseFactory({ mongoose });
 
     const { createBranch } = createBranchFactory({ Branch });
     const { createLocation } = createLocationFactory({ Location });
+    const { createWarehouse } = createWarehouseFactory({ Warehouse });
     const { createBranchRoute } = createBranchRouteFactory({ createBranch });
     const { createLocationRoute } = createLocationRouteFactory({ createLocation });
+    const { createWarehouseRoute } = createWarehouseRouteFactory({ createWarehouse });
 
-    const { apiRouter } = routerFactory({ createBranchRoute, createLocationRoute });
+    const { apiRouter } = routerFactory({ createBranchRoute, createLocationRoute, createWarehouseRoute });
 
     apiRouter({ app });
   } catch (applicationError) {
