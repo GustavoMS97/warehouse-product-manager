@@ -4,7 +4,7 @@
 exports.LocationFactory = ({ mongoose } = {}) => {
   const LocationSchema = new mongoose.Schema({
     name: { type: String, uppercase: true, required: true },
-    location: { type: String, uppercase: true, required: true },
+    address: { type: String, uppercase: true, required: true },
     branch: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Branch',

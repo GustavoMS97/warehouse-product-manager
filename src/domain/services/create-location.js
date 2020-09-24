@@ -1,8 +1,8 @@
 exports.createLocationFactory = ({ Location } = {}) => {
   return {
-    createLocation: async ({ name, location, branch } = {}) => {
+    createLocation: async ({ name, address, branch } = {}) => {
       try {
-        const locationRes = await Location.create({ name, location, branch });
+        const locationRes = await Location.create({ name, address, branch });
         return { location: locationRes };
       } catch (createLocationError) {
         console.log(createLocationError);
