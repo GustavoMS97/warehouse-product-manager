@@ -32,8 +32,6 @@ exports.processMovementsFactory = ({ ProductMovement, Product } = {}) => {
         const calculatedPrice = totalPricingQuantity / totalAddingQuantity || 0;
         const totalQuantity = totalAddingQuantity - totalRemovingQuantity;
 
-        console.log(calculatedPrice, totalQuantity);
-
         const response = await Product.update({ _id: productId }, { calculatedPrice, totalQuantity });
         return { response: response.n && response.n > 0 };
       } catch (processMovementsError) {
