@@ -1,9 +1,14 @@
+const multer = require('multer');
+
 /* eslint-disable no-unused-vars */
 exports.routerFactory = ({
   createBranchRoute,
   createLocationRoute,
   createWarehouseRoute,
   moveProductRoute,
+  productMovementMulterConfig,
+  csvFileTypeMiddleware,
+  moveProductFileRoute,
   findBranchRoute,
   findLocationByBranchRoute,
   findWareHouseByLocationRoute,
@@ -19,6 +24,12 @@ exports.routerFactory = ({
       app.post('/location', createLocationRoute);
       app.post('/warehouse', createWarehouseRoute);
       app.post('/move-product', moveProductRoute);
+      app.post(
+        '/move-product-file',
+        multer(productMovementMulterConfig).single('file'),
+        csvFileTypeMiddleware,
+        moveProductFileRoute,
+      );
       app.get('/branch', findBranchRoute);
       app.get('/location/:branchId', findLocationByBranchRoute);
       app.get('/warehouse/:locationId', findWareHouseByLocationRoute);

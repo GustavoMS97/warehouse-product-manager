@@ -1,11 +1,14 @@
 const env = require('dotenv');
 const joi = require('joi');
+const path = require('path');
 
 const ENV_MODE = Object.freeze({
   DEVELOPMENT: 'development',
   PRODUCTION: 'production',
   TEST: 'test',
 });
+
+const getTempFolder = () => path.join(process.cwd(), 'tmp');
 
 exports.loadEnvironment = () => {
   let { parsed: rawEnvVars, error: envVarsLoadError } = env.config();
@@ -32,5 +35,8 @@ exports.loadEnvironment = () => {
     console.log('Não foi possivel carregar as variaveis de ambiente, finalizando aplicação.');
     throw envVarsValidationError;
   }
+
+  envVars.TEMP_FOLDER = getTempFolder();
+
   return { ENV: envVars };
 };

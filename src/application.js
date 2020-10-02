@@ -2,6 +2,8 @@ const { loadEnvironment } = require('./infra/config/environment');
 
 const { apiFactory } = require('./infra/api/api');
 
+const { multerFactory } = require('./infra/sdk/multer');
+
 const { connectToMongoose } = require('./infra/db/mongoose');
 const { BranchFactory } = require('./domain/models/Branch');
 const { LocationFactory } = require('./domain/models/Location');
@@ -27,6 +29,8 @@ const { findProductByWareHouseFactory } = require('./domain/services/find-produc
 const { processMovementsFactory } = require('./domain/use-cases/process-movements');
 const { moveProductFactory } = require('./domain/use-cases/move-product');
 
+const { fileTypeMiddlewareFactory } = require('./infra/api/middlewares/file-type-middleware');
+
 const { createBranchRouteFactory } = require('./infra/api/routes/create-branch-route');
 const { createLocationRouteFactory } = require('./infra/api/routes/create-location-route');
 const { createWarehouseRouteFactory } = require('./infra/api/routes/create-warehouse-route');
@@ -40,6 +44,10 @@ const {
 const { findProductByWareHouseRouteFactory } = require('./infra/api/routes/find-product-by-warehouse-route');
 
 const { routerFactory } = require('./infra/api/router');
+const { moveProductFileRouteFactory } = require('./infra/api/routes/move-product-file-route');
+const { getCSVContentInMatrixFactory } = require('./domain/helpers/get-csv-content-in-matrix');
+const { getFileContentFactory } = require('./domain/helpers/get-file-content');
+const { validateCSVHeadersFactory } = require('./domain/helpers/validate-csv-headers');
 
 const application = async () => {
   try {
@@ -48,6 +56,9 @@ const application = async () => {
     const { startApi } = apiFactory({ ENV });
     const { app } = await startApi();
 
+    const { multer } = multerFactory({ ENV });
+    const { multerConfig: productMovementMulterConfig } = multer({ folder: 'product-movement' });
+
     const { mongoose } = await connectToMongoose({ ENV });
     const { Branch } = BranchFactory({ mongoose });
     const { Location } = LocationFactory({ mongoose });
@@ -55,6 +66,10 @@ const application = async () => {
     const { Product } = ProductFactory({ mongoose });
     const { Document } = DocumentFactory({ mongoose });
     const { ProductMovement } = ProductMovementFactory({ mongoose });
+
+    const { getCSVContentInMatrix } = getCSVContentInMatrixFactory();
+    const { validateCSVHeaders } = validateCSVHeadersFactory({ getCSVContentInMatrix });
+    const { getFileContent } = getFileContentFactory();
 
     const { createBranch } = createBranchFactory({ Branch });
     const { createLocation } = createLocationFactory({ Location });
@@ -80,10 +95,18 @@ const application = async () => {
       processMovements,
     });
 
+    const { fileTypeMiddleware: csvFileTypeMiddleware } = fileTypeMiddlewareFactory({ expectedType: 'text/csv' });
+
     const { createBranchRoute } = createBranchRouteFactory({ createBranch });
     const { createLocationRoute } = createLocationRouteFactory({ createLocation });
     const { createWarehouseRoute } = createWarehouseRouteFactory({ createWarehouse });
     const { moveProductRoute } = moveProductRouteFactory({ moveProduct });
+    const { moveProductFileRoute } = moveProductFileRouteFactory({
+      moveProduct,
+      getCSVContentInMatrix,
+      getFileContent,
+      validateCSVHeaders,
+    });
     const { findBranchRoute } = findBranchRouteFactory({ findBranch });
     const { findLocationByBranchRoute } = findLocationByBranchRouteFactory({ findLocationByBranch });
     const { findWareHouseByLocationRoute } = findWareHouseByLocationRouteFactory({ findWareHouseByLocation });
@@ -97,6 +120,9 @@ const application = async () => {
       createLocationRoute,
       createWarehouseRoute,
       moveProductRoute,
+      productMovementMulterConfig,
+      csvFileTypeMiddleware,
+      moveProductFileRoute,
       findBranchRoute,
       findLocationByBranchRoute,
       findWareHouseByLocationRoute,

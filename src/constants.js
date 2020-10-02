@@ -15,3 +15,18 @@ exports.PRODUCT_MOVEMENT_TYPE = Object.freeze({
 });
 
 exports.PRODUCT_MOVEMENT_TYPES = Object.values(this.PRODUCT_MOVEMENT_TYPE);
+
+exports.PRODUCT_MOVEMENT_CSV_HEADERS = Object.freeze({
+  documentObservation: 1,
+  documentCode: 1,
+  productName: 1,
+  productCode: 1,
+  productUnitOfMeasurement: 1,
+  productProvider: 1,
+  productWarehouse: 1,
+  productMovementQuantity: 1,
+  productMovementPrice: 1,
+  productMovementType: 1,
+});
+
+exports.PRODUCT_MOVEMENT_CSV_HEADERS_ARRAY = Object.keys(this.PRODUCT_MOVEMENT_CSV_HEADERS);
