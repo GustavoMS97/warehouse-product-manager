@@ -13,6 +13,7 @@ exports.routerFactory = ({
   findLocationByBranchRoute,
   findWareHouseByLocationRoute,
   findProductMovementByProductRoute,
+  findProductMovementFileByProductRoute,
   findProductByWareHouseRoute,
 } = {}) => {
   return {
@@ -35,6 +36,7 @@ exports.routerFactory = ({
       app.get('/warehouse/:locationId', findWareHouseByLocationRoute);
       app.get('/product/:warehouseId', findProductByWareHouseRoute);
       app.get('/product-movement/:productId', findProductMovementByProductRoute);
+      app.get('/product-movement-file/:productId', findProductMovementFileByProductRoute);
       app.use((error, req, res, next) => {
         return res.status(500).send({ message: error.message });
       });

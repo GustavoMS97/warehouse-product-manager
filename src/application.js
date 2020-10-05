@@ -23,7 +23,7 @@ const { findProductByCodeFactory } = require('./domain/services/find-product-by-
 const { findBranchFactory } = require('./domain/services/find-branch');
 const { findLocationByBranchFactory } = require('./domain/services/find-location-by-branch');
 const { findWarehouseByLocationFactory } = require('./domain/services/find-warehouse-by-location');
-const { findProductMovementByProductFactory } = require('./domain/services/find.product-movement-by-warehouse');
+const { findProductMovementByProductFactory } = require('./domain/services/find.product-movement-by-product');
 const { findProductByWareHouseFactory } = require('./domain/services/find-product-by-warehouse');
 
 const { processMovementsFactory } = require('./domain/use-cases/process-movements');
@@ -40,7 +40,7 @@ const { findLocationByBranchRouteFactory } = require('./infra/api/routes/find-lo
 const { findWareHouseByLocationRouteFactory } = require('./infra/api/routes/find-warehouse-by-location-route');
 const {
   findProductMovementByProductRouteFactory,
-} = require('./infra/api/routes/find-product-movement-by-warehouse-route');
+} = require('./infra/api/routes/find-product-movement-by-product-route');
 const { findProductByWareHouseRouteFactory } = require('./infra/api/routes/find-product-by-warehouse-route');
 
 const { routerFactory } = require('./infra/api/router');
@@ -48,6 +48,10 @@ const { moveProductFileRouteFactory } = require('./infra/api/routes/move-product
 const { getCSVContentInMatrixFactory } = require('./domain/helpers/get-csv-content-in-matrix');
 const { getFileContentFactory } = require('./domain/helpers/get-file-content');
 const { validateCSVHeadersFactory } = require('./domain/helpers/validate-csv-headers');
+const { generateFileFromStringFactory } = require('./domain/helpers/generate-file-from-string');
+const {
+  findProductMovementFileByProductRouteFactory,
+} = require('./infra/api/routes/find-product-movement-file-by-product-route');
 
 const application = async () => {
   try {
@@ -70,6 +74,7 @@ const application = async () => {
     const { getCSVContentInMatrix } = getCSVContentInMatrixFactory();
     const { validateCSVHeaders } = validateCSVHeadersFactory({ getCSVContentInMatrix });
     const { getFileContent } = getFileContentFactory();
+    const { generateFileFromString } = generateFileFromStringFactory({ ENV });
 
     const { createBranch } = createBranchFactory({ Branch });
     const { createLocation } = createLocationFactory({ Location });
@@ -113,6 +118,10 @@ const application = async () => {
     const { findProductMovementByProductRoute } = findProductMovementByProductRouteFactory({
       findProductMovementByProduct,
     });
+    const { findProductMovementFileByProductRoute } = findProductMovementFileByProductRouteFactory({
+      findProductMovementByProduct,
+      generateFileFromString,
+    });
     const { findProductByWareHouseRoute } = findProductByWareHouseRouteFactory({ findProductByWareHouse });
 
     const { apiRouter } = routerFactory({
@@ -127,6 +136,7 @@ const application = async () => {
       findLocationByBranchRoute,
       findWareHouseByLocationRoute,
       findProductMovementByProductRoute,
+      findProductMovementFileByProductRoute,
       findProductByWareHouseRoute,
     });
 
