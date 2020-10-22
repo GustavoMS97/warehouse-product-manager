@@ -16,6 +16,7 @@ exports.moveProductRouteFactory = ({ moveProduct } = {}) => {
             productProvider: joi.string().required(),
             productWarehouse: joi.string().required(),
             productCategory: joi.string(),
+            productMinimumInStock: joi.number().required(),
             productMovementQuantity: joi.number().positive().integer().required(),
             productMovementPrice: joi.number().positive().required(),
             productMovementType: joi
@@ -39,6 +40,7 @@ exports.moveProductRouteFactory = ({ moveProduct } = {}) => {
           productProvider,
           productWarehouse,
           productCategory,
+          productMinimumInStock,
           productMovementQuantity,
           productMovementPrice,
           productMovementType,
@@ -53,6 +55,7 @@ exports.moveProductRouteFactory = ({ moveProduct } = {}) => {
             productProvider,
             productWarehouse,
             productCategory,
+            productMinimumInStock,
             productMovementQuantity,
             productMovementPrice,
             productMovementType,
