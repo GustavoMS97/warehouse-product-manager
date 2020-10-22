@@ -18,6 +18,7 @@ exports.ProductFactory = ({ mongoose } = {}) => {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
     },
+    minimumInStock: { type: Number, required: true },
     createdAt: {
       type: Date,
       default: Date.now,
