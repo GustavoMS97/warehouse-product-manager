@@ -15,6 +15,9 @@ exports.routerFactory = ({
   findProductMovementByProductRoute,
   findProductMovementFileByProductRoute,
   findProductByWareHouseRoute,
+
+  requestAuthenticationMiddleware,
+  createOrUpdateShoppingCartRoute,
 } = {}) => {
   return {
     /**
@@ -37,6 +40,9 @@ exports.routerFactory = ({
       app.get('/product/:warehouseId', findProductByWareHouseRoute);
       app.get('/product-movement/:productId', findProductMovementByProductRoute);
       app.get('/product-movement-file/:productId', findProductMovementFileByProductRoute);
+
+      app.use(requestAuthenticationMiddleware);
+      app.post('/shopping-cart', createOrUpdateShoppingCartRoute);
       app.use((error, req, res, next) => {
         return res.status(500).send({ message: error.message });
       });
