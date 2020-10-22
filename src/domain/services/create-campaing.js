@@ -4,11 +4,7 @@ exports.createCampaingFactory = ({ Campaing } = {}) => {
       try {
         const campaing = await Campaing.create({ name, products, isActive: true });
         if (campaing) {
-          console.log(campaing._id);
-          // Campanha nao está atualizando os outros Ids.
-          // const desactiveCampaign = await Campaing.find({ _id: { $ne: campaing._id } });
-          let doc = await Campaing.updateMany({ _id: { $ne: campaing._id } }, { isActive: false });
-          console.log('doc', doc);
+          await Campaing.updateMany({ _id: { $ne: campaing._id } }, { isActive: false });
         }
         return { campaing };
       } catch (createCampaingError) {
