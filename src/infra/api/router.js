@@ -15,6 +15,11 @@ exports.routerFactory = ({
   findProductMovementByProductRoute,
   findProductMovementFileByProductRoute,
   findProductByWareHouseRoute,
+  createCategoryRoute,
+  findCampaingRoute,
+  createCampaingRoute,
+  findAllCampaingRoute,
+  findAllProductRoute,
 } = {}) => {
   return {
     /**
@@ -25,6 +30,8 @@ exports.routerFactory = ({
       app.post('/location', createLocationRoute);
       app.post('/warehouse', createWarehouseRoute);
       app.post('/move-product', moveProductRoute);
+      app.post('/category', createCategoryRoute);
+      app.post('/campaing', createCampaingRoute);
       app.post(
         '/move-product-file',
         multer(productMovementMulterConfig).single('file'),
@@ -37,6 +44,9 @@ exports.routerFactory = ({
       app.get('/product/:warehouseId', findProductByWareHouseRoute);
       app.get('/product-movement/:productId', findProductMovementByProductRoute);
       app.get('/product-movement-file/:productId', findProductMovementFileByProductRoute);
+      app.get('/campaing', findCampaingRoute);
+      app.get('/all-campaing', findAllCampaingRoute);
+      app.get('/all-product', findAllProductRoute);
       app.use((error, req, res, next) => {
         return res.status(500).send({ message: error.message });
       });
