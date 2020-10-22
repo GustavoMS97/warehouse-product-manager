@@ -14,6 +14,10 @@ exports.ProductFactory = ({ mongoose } = {}) => {
       ref: 'Warehouse',
       required: true,
     },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+    },
     createdAt: {
       type: Date,
       default: Date.now,

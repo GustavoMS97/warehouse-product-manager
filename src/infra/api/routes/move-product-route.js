@@ -15,6 +15,7 @@ exports.moveProductRouteFactory = ({ moveProduct } = {}) => {
             productUnitOfMeasurement: joi.string(),
             productProvider: joi.string().required(),
             productWarehouse: joi.string().required(),
+            productCategory: joi.string(),
             productMovementQuantity: joi.number().positive().integer().required(),
             productMovementPrice: joi.number().positive().required(),
             productMovementType: joi
@@ -37,6 +38,7 @@ exports.moveProductRouteFactory = ({ moveProduct } = {}) => {
           productUnitOfMeasurement,
           productProvider,
           productWarehouse,
+          productCategory,
           productMovementQuantity,
           productMovementPrice,
           productMovementType,
@@ -50,6 +52,7 @@ exports.moveProductRouteFactory = ({ moveProduct } = {}) => {
             productUnitOfMeasurement,
             productProvider,
             productWarehouse,
+            productCategory,
             productMovementQuantity,
             productMovementPrice,
             productMovementType,

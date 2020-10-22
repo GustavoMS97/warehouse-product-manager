@@ -8,6 +8,7 @@ exports.createProductFactory = ({ Product } = {}) => {
       unitOfMeasurement,
       provider,
       warehouse,
+      category,
     } = {}) => {
       try {
         const product = await Product.create({
@@ -18,6 +19,7 @@ exports.createProductFactory = ({ Product } = {}) => {
           unitOfMeasurement,
           providers: [provider],
           warehouse,
+          category,
         });
         return { product };
       } catch (createProductError) {
