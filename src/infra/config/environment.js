@@ -27,6 +27,8 @@ exports.loadEnvironment = () => {
         .valid(...Object.values(ENV_MODE)),
       PORT: joi.number().port().required(),
       MONGO_DB_URL: joi.string().required(),
+      TIME_EXECUTE_JOB: joi.string().required(),
+      TIME_ZONE: joi.string().required(),
     })
     .required()
     .options({ stripUnknown: true })
