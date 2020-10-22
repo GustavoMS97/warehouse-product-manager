@@ -3,6 +3,7 @@ const { loadEnvironment } = require('./infra/config/environment');
 const { apiFactory } = require('./infra/api/api');
 
 const { multerFactory } = require('./infra/sdk/multer');
+const { CronJobFactory } = require('./infra/sdk/cronJob');
 
 const { connectToMongoose } = require('./infra/db/mongoose');
 const { BranchFactory } = require('./domain/models/Branch');
@@ -76,6 +77,9 @@ const application = async () => {
 
     const { multer } = multerFactory({ ENV });
     const { multerConfig: productMovementMulterConfig } = multer({ folder: 'product-movement' });
+
+    const { cronjob } = CronJobFactory({ ENV });
+    const { cronJobConfig } = cronjob({ timeExecuteJob: ENV.TIME_EXECUTE_JOB });
 
     const { mongoose } = await connectToMongoose({ ENV });
     const { Branch } = BranchFactory({ mongoose });
@@ -174,6 +178,7 @@ const application = async () => {
       findMinimumStockProductRoute,
     });
 
+    cronJobConfig.job.start();
     apiRouter({ app });
   } catch (applicationError) {
     console.log(applicationError);
