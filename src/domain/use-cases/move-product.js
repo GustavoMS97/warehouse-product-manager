@@ -20,6 +20,7 @@ exports.moveProductFactory = ({
           productUnitOfMeasurement,
           productProvider,
           productWarehouse,
+          productCategory,
           productMovementQuantity,
           productMovementPrice,
           productMovementType,
@@ -33,6 +34,7 @@ exports.moveProductFactory = ({
             productUnitOfMeasurement: joi.string(),
             productProvider: joi.string().required(),
             productWarehouse: joi.string().required(),
+            productCategory: joi.string(),
             productMovementQuantity: joi.number().positive().integer().required(),
             productMovementPrice: joi.number().positive().required(),
             productMovementType: joi
@@ -54,6 +56,7 @@ exports.moveProductFactory = ({
             unitOfMeasurement: productUnitOfMeasurement,
             provider: productProvider,
             warehouse: productWarehouse,
+            category: productCategory,
           });
           product = productResponse;
         } else {
