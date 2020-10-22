@@ -20,6 +20,7 @@ exports.routerFactory = ({
   createCampaingRoute,
   findAllCampaingRoute,
   findAllProductRoute,
+  findMinimumStockProductRoute,
 } = {}) => {
   return {
     /**
@@ -47,6 +48,7 @@ exports.routerFactory = ({
       app.get('/campaing', findCampaingRoute);
       app.get('/all-campaing', findAllCampaingRoute);
       app.get('/all-product', findAllProductRoute);
+      app.get('/productMinimumStock', findMinimumStockProductRoute);
       app.use((error, req, res, next) => {
         return res.status(500).send({ message: error.message });
       });
