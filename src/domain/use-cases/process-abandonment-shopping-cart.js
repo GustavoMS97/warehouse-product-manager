@@ -1,13 +1,13 @@
-exports.processAbandonmentShoppingCartFactory = ({ ProductMovement, Product } = {}) => {
+exports.processAbandonmentShoppingCartFactory = ({ ENV, ShoppingCart } = {}) => {
   return {
     processAbandonmentShoppingCart: async () => {
       try {
         console.log('----- Job Iniciado  -----');
         console.log('Verificando carrinhos não finalizados');
-        console.log('Executando para carrinhos finalizados');
+        var dateSearch = new Date();
+        dateSearch.addDays(ENV.TIME_ABANDONMENT);
+        await ShoppingCart.updateMany({ isActive: true, created_at: { $gte: dateSearch } }, { isActive: false });
         console.log('----- Job Encerrado -----');
-        // ProductMovement.find();
-        // Product.find();
         return { status: true };
       } catch (processAbandonmentShoppingCartError) {
         console.log(processAbandonmentShoppingCartError);
