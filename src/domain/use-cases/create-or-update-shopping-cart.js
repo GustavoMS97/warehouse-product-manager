@@ -7,7 +7,6 @@ exports.createOrUpdateShoppingCartFactory = ({ ShoppingCart, createShoppingCart,
         if (Array.isArray(ownerShoppingCart) && ownerShoppingCart.length > 0) {
           let { response } = await updateShoppingCart({
             ownerShoppingCart: ownerShoppingCart[0],
-            owner,
             product,
             quantity,
           });
