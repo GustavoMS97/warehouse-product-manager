@@ -16,7 +16,7 @@ exports.createOrUpdateShoppingCartFactory = ({ ShoppingCart, createShoppingCart,
           let { shoppingCart } = await createShoppingCart({ owner, product, quantity });
           shoppingCartResponse = shoppingCart;
         }
-        return { shoppingCart: shoppingCartResponse };
+        return { response: shoppingCartResponse };
       } catch (updateShoppingCartError) {
         console.log(updateShoppingCartError);
         throw updateShoppingCartError;

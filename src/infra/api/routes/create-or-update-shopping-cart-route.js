@@ -26,9 +26,9 @@ exports.createOrUpdateShoppingCartRouteFactory = ({ createOrUpdateShoppingCart }
         }
         const { response } = createOrUpdateShoppingCart({ product, quantity, owner: id });
         if (response) {
-          return res.status(200);
+          return res.status(200).send();
         }
-        return res.status(400);
+        return res.status(400).send();
       } catch (createOrUpdateShoppingCartRouteError) {
         console.log(createOrUpdateShoppingCartRouteError);
         next(createOrUpdateShoppingCartRouteError);
