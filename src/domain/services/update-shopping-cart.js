@@ -4,7 +4,7 @@ exports.updateShoppingCartFactory = ({ ShoppingCart } = {}) => {
       try {
         console.log(product);
         const isInArray = ownerShoppingCart.productsQuantity.filter((p) => p.product === product).length > 0;
-        if (isInArray) {
+        if (!isInArray) {
           ownerShoppingCart.productsQuantity.push({ product, quantity });
         } else {
           for (let i = 0; i < ownerShoppingCart.productsQuantity.length; i++) {
