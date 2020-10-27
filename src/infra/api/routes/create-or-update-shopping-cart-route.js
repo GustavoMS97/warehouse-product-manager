@@ -24,7 +24,7 @@ exports.createOrUpdateShoppingCartRouteFactory = ({ createOrUpdateShoppingCart }
         if (!ObjectId.isValid(id)) {
           throw new Error('Usuário inválido!');
         }
-        const { response } = createOrUpdateShoppingCart({ product, quantity, owner: id });
+        const { response } = await createOrUpdateShoppingCart({ product, quantity, owner: id });
         if (response) {
           return res.status(200).send();
         }
