@@ -7,7 +7,7 @@ exports.updateShoppingCartFactory = ({ ShoppingCart } = {}) => {
           ownerShoppingCart.productsQuantity.map((p) => {
             console.log(p);
             console.log(typeof p.product);
-            console.log(p.product + ' === ' + product);
+            console.log(p.product + ' === ' + product + ' = ' + product === p.product);
             if (product === p.product) {
               return p;
             }
