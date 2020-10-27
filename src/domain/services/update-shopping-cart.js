@@ -2,9 +2,7 @@ exports.updateShoppingCartFactory = ({ ShoppingCart } = {}) => {
   return {
     updateShoppingCart: async ({ ownerShoppingCart, product, quantity } = {}) => {
       try {
-        console.log(product);
         const isInArray = ownerShoppingCart.productsQuantity.filter((p) => p.product.toString() == product).length > 0;
-        console.log('isinarray', isInArray);
         if (!isInArray) {
           ownerShoppingCart.productsQuantity.push({ product, quantity });
         } else {
