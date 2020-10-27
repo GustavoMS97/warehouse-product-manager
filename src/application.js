@@ -34,6 +34,7 @@ const { findProductMovementByProductFactory } = require('./domain/services/find.
 const { findProductByWareHouseFactory } = require('./domain/services/find-product-by-warehouse');
 const { findAllProductFactory } = require('./domain/services/find-all-product');
 const { findMinimumStockProductFactory } = require('./domain/services/find-product-minimumStock');
+const { findCategoryFactory } = require('./domain/services/find-category');
 
 const { processMovementsFactory } = require('./domain/use-cases/process-movements');
 const { moveProductFactory } = require('./domain/use-cases/move-product');
@@ -57,6 +58,7 @@ const {
 } = require('./infra/api/routes/find-product-movement-by-product-route');
 const { findProductByWareHouseRouteFactory } = require('./infra/api/routes/find-product-by-warehouse-route');
 const { findMinimumStockProductRouteFactory } = require('./infra/api/routes/find-product-minimumStock-route');
+const { findCategoryRouteFactory } = require('./infra/api/routes/find-category-route');
 
 const { routerFactory } = require('./infra/api/router');
 const { moveProductFileRouteFactory } = require('./infra/api/routes/move-product-file-route');
@@ -115,6 +117,7 @@ const application = async () => {
     const { findProductByWareHouse } = findProductByWareHouseFactory({ Product, Warehouse });
     const { findAllProduct } = findAllProductFactory({ Product });
     const { findMinimumStockProduct } = findMinimumStockProductFactory({ Product });
+    const { findCategory } = findCategoryFactory({ Category });
 
     const { processMovements } = processMovementsFactory({ ProductMovement, Product });
     const { moveProduct } = moveProductFactory({
@@ -155,6 +158,7 @@ const application = async () => {
     const { findProductByWareHouseRoute } = findProductByWareHouseRouteFactory({ findProductByWareHouse });
     const { findAllProductRoute } = findAllProductRouteFactory({ findAllProduct });
     const { findMinimumStockProductRoute } = findMinimumStockProductRouteFactory({ findMinimumStockProduct });
+    const { findCategoryRoute } = findCategoryRouteFactory({ findCategory });
 
     const { apiRouter } = routerFactory({
       createBranchRoute,
@@ -176,6 +180,7 @@ const application = async () => {
       findAllCampaingRoute,
       findAllProductRoute,
       findMinimumStockProductRoute,
+      findCategoryRoute,
     });
 
     cronJobConfig.job.start();
