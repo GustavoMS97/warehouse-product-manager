@@ -5,9 +5,9 @@ exports.createOrUpdateShoppingCartFactory = ({ ShoppingCart, createShoppingCart,
         const ownerShoppingCart = await ShoppingCart.find({ owner, isActive: true });
         console.log(ownerShoppingCart);
         let shoppingCartResponse;
-        if (ownerShoppingCart) {
+        if (Array.isArray(ownerShoppingCart) && ownerShoppingCart.length > 0) {
           let { shoppingCart } = await updateShoppingCart({
-            ownerShoppingCart,
+            ownerShoppingCart: ownerShoppingCart[0],
             owner,
             product,
             quantity,
