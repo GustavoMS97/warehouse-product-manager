@@ -6,13 +6,13 @@ exports.createOrUpdateShoppingCartFactory = ({ ShoppingCart, createShoppingCart,
         console.log(ownerShoppingCart);
         let shoppingCartResponse;
         if (Array.isArray(ownerShoppingCart) && ownerShoppingCart.length > 0) {
-          let { shoppingCart } = await updateShoppingCart({
+          let { response } = await updateShoppingCart({
             ownerShoppingCart: ownerShoppingCart[0],
             owner,
             product,
             quantity,
           });
-          shoppingCartResponse = shoppingCart;
+          shoppingCartResponse = response;
         } else {
           let { shoppingCart } = await createShoppingCart({ owner, product, quantity });
           shoppingCartResponse = shoppingCart;
