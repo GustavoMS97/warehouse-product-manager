@@ -9,11 +9,12 @@ exports.updateShoppingCartFactory = ({ ShoppingCart } = {}) => {
           ownerShoppingCart.productsQuantity.push({ product, quantity });
         } else {
           for (let i = 0; i < ownerShoppingCart.productsQuantity.length; i++) {
-            if (ownerShoppingCart.productsQuantity[i].product === product) {
-              if (quantity < 0 && -1 * quantity > ownerShoppingCart.productsQuantity[i].quantity) {
-                ownerShoppingCart.productsQuantity[i].quantity = 0;
+            const item = ownerShoppingCart.productsQuantity[i];
+            if (item.product.toString() === product) {
+              if (quantity < 0 && -1 * quantity > item.quantity) {
+                item.quantity = 0;
               } else {
-                ownerShoppingCart.productsQuantity[i].quantity += quantity;
+                item.quantity += quantity;
               }
               break;
             }
