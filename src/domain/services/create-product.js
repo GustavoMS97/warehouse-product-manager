@@ -9,6 +9,7 @@ exports.createProductFactory = ({ Product } = {}) => {
       provider,
       warehouse,
       category,
+      minimumInStock,
     } = {}) => {
       try {
         const product = await Product.create({
@@ -20,6 +21,7 @@ exports.createProductFactory = ({ Product } = {}) => {
           providers: [provider],
           warehouse,
           category,
+          minimumInStock,
         });
         return { product };
       } catch (createProductError) {

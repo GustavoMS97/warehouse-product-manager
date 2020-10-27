@@ -3,6 +3,7 @@ const { loadEnvironment } = require('./infra/config/environment');
 const { apiFactory } = require('./infra/api/api');
 
 const { multerFactory } = require('./infra/sdk/multer');
+const { CronJobFactory } = require('./infra/sdk/cronJob');
 
 const { connectToMongoose } = require('./infra/db/mongoose');
 const { BranchFactory } = require('./domain/models/Branch');
@@ -35,6 +36,8 @@ const { findProductByWareHouseFactory } = require('./domain/services/find-produc
 const { findAllProductFactory } = require('./domain/services/find-all-product');
 const { createShoppingCartFactory } = require('./domain/services/create-shopping-cart');
 const { updateShoppingCartFactory } = require('./domain/services/update-shopping-cart');
+const { findMinimumStockProductFactory } = require('./domain/services/find-product-minimumStock');
+const { findCategoryFactory } = require('./domain/services/find-category');
 
 const { processMovementsFactory } = require('./domain/use-cases/process-movements');
 const { moveProductFactory } = require('./domain/use-cases/move-product');
@@ -63,6 +66,8 @@ const {
   findProductMovementFileByProductRouteFactory,
 } = require('./infra/api/routes/find-product-movement-file-by-product-route');
 const { createOrUpdateShoppingCartRouteFactory } = require('./infra/api/routes/create-or-update-shopping-cart-route');
+const { findMinimumStockProductRouteFactory } = require('./infra/api/routes/find-product-minimumStock-route');
+const { findCategoryRouteFactory } = require('./infra/api/routes/find-category-route');
 
 const { routerFactory } = require('./infra/api/router');
 const { moveProductFileRouteFactory } = require('./infra/api/routes/move-product-file-route');
@@ -80,6 +85,9 @@ const application = async () => {
 
     const { multer } = multerFactory({ ENV });
     const { multerConfig: productMovementMulterConfig } = multer({ folder: 'product-movement' });
+
+    const { cronjob } = CronJobFactory({ ENV });
+    const { cronJobConfig } = cronjob({ timeExecuteJob: ENV.TIME_EXECUTE_JOB });
 
     const { mongoose } = await connectToMongoose({ ENV });
     const { Branch } = BranchFactory({ mongoose });
@@ -122,6 +130,8 @@ const application = async () => {
       ShoppingCart,
       createShoppingCart,
     });
+    const { findMinimumStockProduct } = findMinimumStockProductFactory({ Product });
+    const { findCategory } = findCategoryFactory({ Category });
 
     const { processMovements } = processMovementsFactory({ ProductMovement, Product });
     const { moveProduct } = moveProductFactory({
@@ -163,6 +173,8 @@ const application = async () => {
     });
     const { findProductByWareHouseRoute } = findProductByWareHouseRouteFactory({ findProductByWareHouse });
     const { findAllProductRoute } = findAllProductRouteFactory({ findAllProduct });
+    const { findMinimumStockProductRoute } = findMinimumStockProductRouteFactory({ findMinimumStockProduct });
+    const { findCategoryRoute } = findCategoryRouteFactory({ findCategory });
 
     const { apiRouter } = routerFactory({
       createBranchRoute,
@@ -185,8 +197,11 @@ const application = async () => {
       findAllProductRoute,
       createOrUpdateShoppingCartRoute,
       requestAuthenticationMiddleware,
+      findMinimumStockProductRoute,
+      findCategoryRoute,
     });
 
+    cronJobConfig.job.start();
     apiRouter({ app });
   } catch (applicationError) {
     console.log(applicationError);
