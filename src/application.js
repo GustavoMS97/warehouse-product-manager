@@ -86,9 +86,6 @@ const application = async () => {
     const { multer } = multerFactory({ ENV });
     const { multerConfig: productMovementMulterConfig } = multer({ folder: 'product-movement' });
 
-    const { cronjob } = CronJobFactory({ ENV });
-    const { cronJobConfig } = cronjob({ timeExecuteJob: ENV.TIME_EXECUTE_JOB });
-
     const { mongoose } = await connectToMongoose({ ENV });
     const { Branch } = BranchFactory({ mongoose });
     const { Category } = CategoryFactory({ mongoose });
@@ -99,6 +96,9 @@ const application = async () => {
     const { Document } = DocumentFactory({ mongoose });
     const { ProductMovement } = ProductMovementFactory({ mongoose });
     const { ShoppingCart } = ShoppingCartFactory({ mongoose });
+
+    const { cronjob } = CronJobFactory({ ENV, ShoppingCart });
+    const { cronJobConfig } = cronjob({ timeExecuteJob: ENV.TIME_EXECUTE_JOB });
 
     const { getCSVContentInMatrix } = getCSVContentInMatrixFactory();
     const { validateCSVHeaders } = validateCSVHeadersFactory({ getCSVContentInMatrix });
