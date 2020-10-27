@@ -17,8 +17,8 @@ exports.updateShoppingCartFactory = ({ ShoppingCart } = {}) => {
             }
           }
         }
+        console.log(ownerShoppingCart);
         const response = await ShoppingCart.update({ _id: ownerShoppingCart._id }, ownerShoppingCart);
-        console.log(response);
         return { response: response.n && response.n > 0 };
       } catch (updateShoppingCartError) {
         console.log(updateShoppingCartError);
