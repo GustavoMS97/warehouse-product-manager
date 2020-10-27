@@ -7,18 +7,18 @@ exports.updateShoppingCartFactory = ({ ShoppingCart } = {}) => {
           ownerShoppingCart.productsQuantity.push({ product, quantity });
         } else {
           for (let i = 0; i < ownerShoppingCart.productsQuantity.length; i++) {
-            const item = ownerShoppingCart.productsQuantity[i];
-            if (item.product === product) {
-              if (quantity < 0 && -1 * quantity > item.quantity) {
-                item.quantity = 0;
+            if (ownerShoppingCart.productsQuantity[i].product === product) {
+              if (quantity < 0 && -1 * quantity > ownerShoppingCart.productsQuantity[i].quantity) {
+                ownerShoppingCart.productsQuantity[i].quantity = 0;
               } else {
-                item.quantity += quantity;
+                ownerShoppingCart.productsQuantity[i].quantity += quantity;
               }
               break;
             }
           }
         }
         const response = await ShoppingCart.update({ _id: ownerShoppingCart._id }, ownerShoppingCart);
+        console.log(response);
         return { response: response.n && response.n > 0 };
       } catch (updateShoppingCartError) {
         console.log(updateShoppingCartError);
