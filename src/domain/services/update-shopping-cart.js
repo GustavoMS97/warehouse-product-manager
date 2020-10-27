@@ -4,6 +4,7 @@ exports.updateShoppingCartFactory = ({ ShoppingCart } = {}) => {
       try {
         console.log(product);
         const isInArray = ownerShoppingCart.productsQuantity.filter((p) => p.product === product).length > 0;
+        console.log('isinarray', isInArray);
         if (!isInArray) {
           ownerShoppingCart.productsQuantity.push({ product, quantity });
         } else {
@@ -18,7 +19,6 @@ exports.updateShoppingCartFactory = ({ ShoppingCart } = {}) => {
             }
           }
         }
-        console.log(ownerShoppingCart);
         const response = await ShoppingCart.update({ _id: ownerShoppingCart._id }, ownerShoppingCart);
         return { response: response.n && response.n > 0 };
       } catch (updateShoppingCartError) {
