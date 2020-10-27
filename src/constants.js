@@ -11,7 +11,8 @@ exports.PRODUCT_MOVEMENT_TYPE = Object.freeze({
   FABRICATION: { id: 4, description: 'FABRICAÇÃO', action: this.PRODUCT_MOVEMENT_ACTION_TYPE.REMOVING },
   DEVOLUTION: { id: 5, description: 'DEVOLUÇÃO', action: this.PRODUCT_MOVEMENT_ACTION_TYPE.REMOVING },
   LOST_PRODUCT: { id: 6, description: 'PERDA', action: this.PRODUCT_MOVEMENT_ACTION_TYPE.REMOVING },
-  ADJUSTMENT: { id: 7, description: 'AJUSTE' },
+  ADJUSTMENT: { id: 7, description: 'AJUSTE', action: this.PRODUCT_MOVEMENT_ACTION_TYPE.AJUSTING },
+  SHOPPING_CART_ADD: { id: 8, description: 'ADICIONA NO CARRINHO' },
 });
 
 exports.PRODUCT_MOVEMENT_TYPES = Object.values(this.PRODUCT_MOVEMENT_TYPE);

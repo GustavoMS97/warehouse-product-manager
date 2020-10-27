@@ -13,6 +13,7 @@ const { WarehouseFactory } = require('./domain/models/Warehouse');
 const { ProductFactory } = require('./domain/models/Product');
 const { DocumentFactory } = require('./domain/models/Document');
 const { ProductMovementFactory } = require('./domain/models/ProductMovement');
+const { ShoppingCartFactory } = require('./domain/models/ShoppingCart');
 
 const { createBranchFactory } = require('./domain/services/create-branch');
 const { createCategoryFactory } = require('./domain/services/create-category');
@@ -32,11 +33,15 @@ const { findWarehouseByLocationFactory } = require('./domain/services/find-wareh
 const { findProductMovementByProductFactory } = require('./domain/services/find.product-movement-by-product');
 const { findProductByWareHouseFactory } = require('./domain/services/find-product-by-warehouse');
 const { findAllProductFactory } = require('./domain/services/find-all-product');
+const { createShoppingCartFactory } = require('./domain/services/create-shopping-cart');
+const { updateShoppingCartFactory } = require('./domain/services/update-shopping-cart');
 
 const { processMovementsFactory } = require('./domain/use-cases/process-movements');
 const { moveProductFactory } = require('./domain/use-cases/move-product');
+const { createOrUpdateShoppingCartFactory } = require('./domain/use-cases/create-or-update-shopping-cart');
 
 const { fileTypeMiddlewareFactory } = require('./infra/api/middlewares/file-type-middleware');
+const { requestAuthenticationMiddlewareFactory } = require('./infra/api/middlewares/request-authentication');
 
 const { createBranchRouteFactory } = require('./infra/api/routes/create-branch-route');
 const { createCategoryRouteFactory } = require('./infra/api/routes/create-category-route');
@@ -54,6 +59,10 @@ const {
   findProductMovementByProductRouteFactory,
 } = require('./infra/api/routes/find-product-movement-by-product-route');
 const { findProductByWareHouseRouteFactory } = require('./infra/api/routes/find-product-by-warehouse-route');
+const {
+  findProductMovementFileByProductRouteFactory,
+} = require('./infra/api/routes/find-product-movement-file-by-product-route');
+const { createOrUpdateShoppingCartRouteFactory } = require('./infra/api/routes/create-or-update-shopping-cart-route');
 
 const { routerFactory } = require('./infra/api/router');
 const { moveProductFileRouteFactory } = require('./infra/api/routes/move-product-file-route');
@@ -61,9 +70,6 @@ const { getCSVContentInMatrixFactory } = require('./domain/helpers/get-csv-conte
 const { getFileContentFactory } = require('./domain/helpers/get-file-content');
 const { validateCSVHeadersFactory } = require('./domain/helpers/validate-csv-headers');
 const { generateFileFromStringFactory } = require('./domain/helpers/generate-file-from-string');
-const {
-  findProductMovementFileByProductRouteFactory,
-} = require('./infra/api/routes/find-product-movement-file-by-product-route');
 
 const application = async () => {
   try {
@@ -84,6 +90,7 @@ const application = async () => {
     const { Product } = ProductFactory({ mongoose });
     const { Document } = DocumentFactory({ mongoose });
     const { ProductMovement } = ProductMovementFactory({ mongoose });
+    const { ShoppingCart } = ShoppingCartFactory({ mongoose });
 
     const { getCSVContentInMatrix } = getCSVContentInMatrixFactory();
     const { validateCSVHeaders } = validateCSVHeadersFactory({ getCSVContentInMatrix });
@@ -108,6 +115,13 @@ const application = async () => {
     const { findProductMovementByProduct } = findProductMovementByProductFactory({ ProductMovement });
     const { findProductByWareHouse } = findProductByWareHouseFactory({ Product, Warehouse });
     const { findAllProduct } = findAllProductFactory({ Product });
+    const { createShoppingCart } = createShoppingCartFactory({ ShoppingCart });
+    const { updateShoppingCart } = updateShoppingCartFactory({ ShoppingCart });
+    const { createOrUpdateShoppingCart } = createOrUpdateShoppingCartFactory({
+      updateShoppingCart,
+      ShoppingCart,
+      createShoppingCart,
+    });
 
     const { processMovements } = processMovementsFactory({ ProductMovement, Product });
     const { moveProduct } = moveProductFactory({
@@ -120,6 +134,7 @@ const application = async () => {
     });
 
     const { fileTypeMiddleware: csvFileTypeMiddleware } = fileTypeMiddlewareFactory({ expectedType: 'text/csv' });
+    const { requestAuthenticationMiddleware } = requestAuthenticationMiddlewareFactory();
 
     const { createBranchRoute } = createBranchRouteFactory({ createBranch });
     const { createCategoryRoute } = createCategoryRouteFactory({ createCategory });
@@ -147,6 +162,7 @@ const application = async () => {
     });
     const { findProductByWareHouseRoute } = findProductByWareHouseRouteFactory({ findProductByWareHouse });
     const { findAllProductRoute } = findAllProductRouteFactory({ findAllProduct });
+    const { createOrUpdateShoppingCartRoute } = createOrUpdateShoppingCartRouteFactory({ createOrUpdateShoppingCart });
 
     const { apiRouter } = routerFactory({
       createBranchRoute,
@@ -167,6 +183,8 @@ const application = async () => {
       createCampaingRoute,
       findAllCampaingRoute,
       findAllProductRoute,
+      createOrUpdateShoppingCartRoute,
+      requestAuthenticationMiddleware,
     });
 
     apiRouter({ app });
