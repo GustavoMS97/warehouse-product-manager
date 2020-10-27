@@ -132,6 +132,7 @@ const application = async () => {
       updateProductProvidersById,
       processMovements,
     });
+    const { createOrUpdateShoppingCartRoute } = createOrUpdateShoppingCartRouteFactory({ createOrUpdateShoppingCart });
 
     const { fileTypeMiddleware: csvFileTypeMiddleware } = fileTypeMiddlewareFactory({ expectedType: 'text/csv' });
     const { requestAuthenticationMiddleware } = requestAuthenticationMiddlewareFactory();
@@ -162,7 +163,6 @@ const application = async () => {
     });
     const { findProductByWareHouseRoute } = findProductByWareHouseRouteFactory({ findProductByWareHouse });
     const { findAllProductRoute } = findAllProductRouteFactory({ findAllProduct });
-    const { createOrUpdateShoppingCartRoute } = createOrUpdateShoppingCartRouteFactory({ createOrUpdateShoppingCart });
 
     const { apiRouter } = routerFactory({
       createBranchRoute,
