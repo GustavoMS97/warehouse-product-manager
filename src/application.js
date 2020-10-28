@@ -75,6 +75,8 @@ const { getCSVContentInMatrixFactory } = require('./domain/helpers/get-csv-conte
 const { getFileContentFactory } = require('./domain/helpers/get-file-content');
 const { validateCSVHeadersFactory } = require('./domain/helpers/validate-csv-headers');
 const { generateFileFromStringFactory } = require('./domain/helpers/generate-file-from-string');
+const { findActiveShoppingCartFactory } = require('./domain/services/find-active-shopping-cart');
+const { findActiveShoppingCartRouteFactory } = require('./infra/api/routes/find-active-shopping-cart-route');
 
 const application = async () => {
   try {
@@ -130,6 +132,7 @@ const application = async () => {
       ShoppingCart,
       createShoppingCart,
     });
+    const { findActiveShoppingCart } = findActiveShoppingCartFactory({ ShoppingCart });
     const { findMinimumStockProduct } = findMinimumStockProductFactory({ Product });
     const { findCategory } = findCategoryFactory({ Category });
 
@@ -142,7 +145,6 @@ const application = async () => {
       updateProductProvidersById,
       processMovements,
     });
-    const { createOrUpdateShoppingCartRoute } = createOrUpdateShoppingCartRouteFactory({ createOrUpdateShoppingCart });
 
     const { fileTypeMiddleware: csvFileTypeMiddleware } = fileTypeMiddlewareFactory({ expectedType: 'text/csv' });
     const { requestAuthenticationMiddleware } = requestAuthenticationMiddlewareFactory();
@@ -175,6 +177,8 @@ const application = async () => {
     const { findAllProductRoute } = findAllProductRouteFactory({ findAllProduct });
     const { findMinimumStockProductRoute } = findMinimumStockProductRouteFactory({ findMinimumStockProduct });
     const { findCategoryRoute } = findCategoryRouteFactory({ findCategory });
+    const { createOrUpdateShoppingCartRoute } = createOrUpdateShoppingCartRouteFactory({ createOrUpdateShoppingCart });
+    const { findActiveShoppingCartRoute } = findActiveShoppingCartRouteFactory({ findActiveShoppingCart });
 
     const { apiRouter } = routerFactory({
       createBranchRoute,
@@ -199,6 +203,7 @@ const application = async () => {
       requestAuthenticationMiddleware,
       findMinimumStockProductRoute,
       findCategoryRoute,
+      findActiveShoppingCartRoute,
     });
 
     cronJobConfig.job.start();
