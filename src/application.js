@@ -15,6 +15,8 @@ const { ProductFactory } = require('./domain/models/Product');
 const { DocumentFactory } = require('./domain/models/Document');
 const { ProductMovementFactory } = require('./domain/models/ProductMovement');
 const { ShoppingCartFactory } = require('./domain/models/ShoppingCart');
+const { CheckoutFactory } = require('./domain/models/Checkout');
+const { PaymentInfoFactory } = require('./domain/models/PaymentInfo');
 
 const { createBranchFactory } = require('./domain/services/create-branch');
 const { createCategoryFactory } = require('./domain/services/create-category');
@@ -100,6 +102,8 @@ const application = async () => {
     const { Document } = DocumentFactory({ mongoose });
     const { ProductMovement } = ProductMovementFactory({ mongoose });
     const { ShoppingCart } = ShoppingCartFactory({ mongoose });
+    const { Checkout } = CheckoutFactory({ mongoose });
+    const { PaymentInfo } = PaymentInfoFactory({ mongoose });
 
     const { cronjob } = CronJobFactory({ ENV, ShoppingCart });
     const { cronJobConfig } = cronjob({ timeExecuteJob: ENV.TIME_EXECUTE_JOB });
