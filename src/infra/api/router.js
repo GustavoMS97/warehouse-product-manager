@@ -1,5 +1,4 @@
 const multer = require('multer');
-
 /* eslint-disable no-unused-vars */
 exports.routerFactory = ({
   createBranchRoute,
@@ -20,13 +19,15 @@ exports.routerFactory = ({
   createCampaingRoute,
   findAllCampaingRoute,
   findAllProductRoute,
-
   requestAuthenticationMiddleware,
   createOrUpdateShoppingCartRoute,
   findMinimumStockProductRoute,
   findCategoryRoute,
-
   findActiveShoppingCartRoute,
+  findQuotesRoute,
+  createQuotesRoute,
+  findProposalByQuoteRoute,
+  createProposalAndProposalProductRoute,
 } = {}) => {
   return {
     /**
@@ -39,6 +40,8 @@ exports.routerFactory = ({
       app.post('/move-product', moveProductRoute);
       app.post('/category', createCategoryRoute);
       app.post('/campaing', createCampaingRoute);
+      app.post('/quote', createQuotesRoute);
+      app.post('/proposal', createProposalAndProposalProductRoute);
       app.post(
         '/move-product-file',
         multer(productMovementMulterConfig).single('file'),
@@ -60,6 +63,8 @@ exports.routerFactory = ({
       app.get('/category', findCategoryRoute);
       app.get('/productMinimumStock', findMinimumStockProductRoute);
       app.get('/active-shopping-cart', findActiveShoppingCartRoute);
+      app.get('/quotes', findQuotesRoute);
+      app.get('/proposal/:quoteId', findProposalByQuoteRoute);
       app.use((error, req, res, next) => {
         return res.status(500).send({ message: error.message });
       });
