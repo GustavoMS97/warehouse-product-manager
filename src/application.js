@@ -15,6 +15,9 @@ const { ProductFactory } = require('./domain/models/Product');
 const { DocumentFactory } = require('./domain/models/Document');
 const { ProductMovementFactory } = require('./domain/models/ProductMovement');
 const { ShoppingCartFactory } = require('./domain/models/ShoppingCart');
+const { QuoteFactory } = require('./domain/models/Quote');
+const { ProposalFactory } = require('./domain/models/Proposal');
+const { ProposalProductFactory } = require('./domain/models/ProposalProduct');
 
 const { createBranchFactory } = require('./domain/services/create-branch');
 const { createCategoryFactory } = require('./domain/services/create-category');
@@ -38,10 +41,16 @@ const { createShoppingCartFactory } = require('./domain/services/create-shopping
 const { updateShoppingCartFactory } = require('./domain/services/update-shopping-cart');
 const { findMinimumStockProductFactory } = require('./domain/services/find-product-minimumStock');
 const { findCategoryFactory } = require('./domain/services/find-category');
+const { findQuotesFactory } = require('./domain/services/find-quotes');
+const { findProposalByQuotesFactory } = require('./domain/services/find-proposal-by-quotes');
+const { createQuotesFactory } = require('./domain/services/create-quotes');
+const { createProposalFactory } = require('./domain/services/create-proposal');
+const { createProposalProductFactory } = require('./domain/services/create-proposal-product');
 
 const { processMovementsFactory } = require('./domain/use-cases/process-movements');
 const { moveProductFactory } = require('./domain/use-cases/move-product');
 const { createOrUpdateShoppingCartFactory } = require('./domain/use-cases/create-or-update-shopping-cart');
+const { createProposalAndProposalProductFactory } = require('./domain/use-cases/create-proposal-and-product-proposal');
 
 const { fileTypeMiddlewareFactory } = require('./infra/api/middlewares/file-type-middleware');
 const { requestAuthenticationMiddlewareFactory } = require('./infra/api/middlewares/request-authentication');
@@ -68,6 +77,9 @@ const {
 const { createOrUpdateShoppingCartRouteFactory } = require('./infra/api/routes/create-or-update-shopping-cart-route');
 const { findMinimumStockProductRouteFactory } = require('./infra/api/routes/find-product-minimumStock-route');
 const { findCategoryRouteFactory } = require('./infra/api/routes/find-category-route');
+const { findQuotesRouteFactory } = require('./infra/api/routes/find-quotes-route');
+const { createQuotesRouteFactory } = require('./infra/api/routes/create-quotes-route');
+const { findProposalByQuoteRouteFactory } = require('./infra/api/routes/find-proposal-by-quotes-route');
 
 const { routerFactory } = require('./infra/api/router');
 const { moveProductFileRouteFactory } = require('./infra/api/routes/move-product-file-route');
@@ -77,6 +89,9 @@ const { validateCSVHeadersFactory } = require('./domain/helpers/validate-csv-hea
 const { generateFileFromStringFactory } = require('./domain/helpers/generate-file-from-string');
 const { findActiveShoppingCartFactory } = require('./domain/services/find-active-shopping-cart');
 const { findActiveShoppingCartRouteFactory } = require('./infra/api/routes/find-active-shopping-cart-route');
+const {
+  createProposalAndProposalProductRouteFactory,
+} = require('./infra/api/routes/create-proposal-and-proposal-product-route');
 
 const application = async () => {
   try {
@@ -98,6 +113,9 @@ const application = async () => {
     const { Document } = DocumentFactory({ mongoose });
     const { ProductMovement } = ProductMovementFactory({ mongoose });
     const { ShoppingCart } = ShoppingCartFactory({ mongoose });
+    const { Quote } = QuoteFactory({ mongoose });
+    const { Proposal } = ProposalFactory({ mongoose });
+    const { ProposalProduct } = ProposalProductFactory({ mongoose });
 
     const { cronjob } = CronJobFactory({ ENV, ShoppingCart });
     const { cronJobConfig } = cronjob({ timeExecuteJob: ENV.TIME_EXECUTE_JOB });
@@ -111,8 +129,13 @@ const application = async () => {
     const { createCategory } = createCategoryFactory({ Category });
     const { createCampaing } = createCampaingFactory({ Campaing });
     const { createLocation } = createLocationFactory({ Location });
-    const { createWarehouse } = createWarehouseFactory({ Warehouse });
+    const { findQuotes } = findQuotesFactory({ Quote });
+    const { createQuotes } = createQuotesFactory({ Quote });
+    const { findProposalByQuotes } = findProposalByQuotesFactory({ Proposal });
+    const { createProposal } = createProposalFactory({ Proposal });
+    const { createProposalProduct } = createProposalProductFactory({ ProposalProduct });
     const { createProduct } = createProductFactory({ Product });
+    const { createWarehouse } = createWarehouseFactory({ Warehouse });
     const { createDocument } = createDocumentFactory({ Document });
     const { createProductMovement } = createProductMovementFactory({ ProductMovement, Product });
     const { updateProductProvidersById } = updateProductProvidersByIdFactory({ Product });
@@ -132,6 +155,11 @@ const application = async () => {
       ShoppingCart,
       createShoppingCart,
     });
+    const { createProposalAndProposalProduct } = createProposalAndProposalProductFactory({
+      createProposal,
+      createProposalProduct,
+    });
+
     const { findActiveShoppingCart } = findActiveShoppingCartFactory({ ShoppingCart });
     const { findMinimumStockProduct } = findMinimumStockProductFactory({ Product });
     const { findCategory } = findCategoryFactory({ Category });
@@ -179,6 +207,12 @@ const application = async () => {
     const { findCategoryRoute } = findCategoryRouteFactory({ findCategory });
     const { createOrUpdateShoppingCartRoute } = createOrUpdateShoppingCartRouteFactory({ createOrUpdateShoppingCart });
     const { findActiveShoppingCartRoute } = findActiveShoppingCartRouteFactory({ findActiveShoppingCart });
+    const { findQuotesRoute } = findQuotesRouteFactory({ findQuotes });
+    const { findProposalByQuoteRoute } = findProposalByQuoteRouteFactory({ findProposalByQuotes });
+    const { createQuotesRoute } = createQuotesRouteFactory({ createQuotes });
+    const { createProposalAndProposalProductRoute } = createProposalAndProposalProductRouteFactory({
+      createProposalAndProposalProduct,
+    });
 
     const { apiRouter } = routerFactory({
       createBranchRoute,
@@ -204,6 +238,10 @@ const application = async () => {
       findMinimumStockProductRoute,
       findCategoryRoute,
       findActiveShoppingCartRoute,
+      findQuotesRoute,
+      createQuotesRoute,
+      findProposalByQuoteRoute,
+      createProposalAndProposalProductRoute,
     });
 
     cronJobConfig.job.start();
