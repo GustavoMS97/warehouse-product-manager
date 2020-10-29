@@ -13,6 +13,11 @@ exports.ProposalProductFactory = ({ mongoose } = {}) => {
     name: { type: String, required: true },
     quantity: { type: Number, required: true },
     price: { type: Number, required: true },
+    minimumInStock: { type: Number, required: true },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+    },
     createdAt: {
       type: Date,
       default: Date.now,
