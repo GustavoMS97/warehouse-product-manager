@@ -77,6 +77,8 @@ const { validateCSVHeadersFactory } = require('./domain/helpers/validate-csv-hea
 const { generateFileFromStringFactory } = require('./domain/helpers/generate-file-from-string');
 const { findActiveShoppingCartFactory } = require('./domain/services/find-active-shopping-cart');
 const { findActiveShoppingCartRouteFactory } = require('./infra/api/routes/find-active-shopping-cart-route');
+const { deactivateShoppingCartFactory } = require('./domain/use-cases/deactivate-shopping-cart');
+const { deactivateShoppingCartRouteFactory } = require('./infra/api/routes/deactivate-shopping-cart-route');
 
 const application = async () => {
   try {
@@ -145,6 +147,7 @@ const application = async () => {
       updateProductProvidersById,
       processMovements,
     });
+    const { deactivateShoppingCart } = deactivateShoppingCartFactory({ ShoppingCart });
 
     const { fileTypeMiddleware: csvFileTypeMiddleware } = fileTypeMiddlewareFactory({ expectedType: 'text/csv' });
     const { requestAuthenticationMiddleware } = requestAuthenticationMiddlewareFactory();
@@ -179,6 +182,7 @@ const application = async () => {
     const { findCategoryRoute } = findCategoryRouteFactory({ findCategory });
     const { createOrUpdateShoppingCartRoute } = createOrUpdateShoppingCartRouteFactory({ createOrUpdateShoppingCart });
     const { findActiveShoppingCartRoute } = findActiveShoppingCartRouteFactory({ findActiveShoppingCart });
+    const { deactivateShoppingCartRoute } = deactivateShoppingCartRouteFactory({ deactivateShoppingCart });
 
     const { apiRouter } = routerFactory({
       createBranchRoute,
@@ -204,6 +208,7 @@ const application = async () => {
       findMinimumStockProductRoute,
       findCategoryRoute,
       findActiveShoppingCartRoute,
+      deactivateShoppingCartRoute,
     });
 
     cronJobConfig.job.start();

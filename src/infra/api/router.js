@@ -27,6 +27,7 @@ exports.routerFactory = ({
   findCategoryRoute,
 
   findActiveShoppingCartRoute,
+  deactivateShoppingCartRoute,
 } = {}) => {
   return {
     /**
@@ -60,6 +61,7 @@ exports.routerFactory = ({
       app.get('/category', findCategoryRoute);
       app.get('/productMinimumStock', findMinimumStockProductRoute);
       app.get('/active-shopping-cart', findActiveShoppingCartRoute);
+      app.patch('/shopping-cart/deactivate/:shoppingCartId', deactivateShoppingCartRoute);
       app.use((error, req, res, next) => {
         return res.status(500).send({ message: error.message });
       });
