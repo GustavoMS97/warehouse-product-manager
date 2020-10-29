@@ -92,6 +92,8 @@ const { findActiveShoppingCartRouteFactory } = require('./infra/api/routes/find-
 const {
   createProposalAndProposalProductRouteFactory,
 } = require('./infra/api/routes/create-proposal-and-proposal-product-route');
+const { deactivateShoppingCartFactory } = require('./domain/use-cases/deactivate-shopping-cart');
+const { deactivateShoppingCartRouteFactory } = require('./infra/api/routes/deactivate-shopping-cart-route');
 
 const application = async () => {
   try {
@@ -173,6 +175,7 @@ const application = async () => {
       updateProductProvidersById,
       processMovements,
     });
+    const { deactivateShoppingCart } = deactivateShoppingCartFactory({ ShoppingCart });
 
     const { fileTypeMiddleware: csvFileTypeMiddleware } = fileTypeMiddlewareFactory({ expectedType: 'text/csv' });
     const { requestAuthenticationMiddleware } = requestAuthenticationMiddlewareFactory();
@@ -213,6 +216,7 @@ const application = async () => {
     const { createProposalAndProposalProductRoute } = createProposalAndProposalProductRouteFactory({
       createProposalAndProposalProduct,
     });
+    const { deactivateShoppingCartRoute } = deactivateShoppingCartRouteFactory({ deactivateShoppingCart });
 
     const { apiRouter } = routerFactory({
       createBranchRoute,
@@ -242,6 +246,7 @@ const application = async () => {
       createQuotesRoute,
       findProposalByQuoteRoute,
       createProposalAndProposalProductRoute,
+      deactivateShoppingCartRoute,
     });
 
     cronJobConfig.job.start();

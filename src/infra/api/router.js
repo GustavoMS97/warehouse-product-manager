@@ -28,6 +28,7 @@ exports.routerFactory = ({
   createQuotesRoute,
   findProposalByQuoteRoute,
   createProposalAndProposalProductRoute,
+  deactivateShoppingCartRoute,
 } = {}) => {
   return {
     /**
@@ -65,6 +66,7 @@ exports.routerFactory = ({
       app.get('/active-shopping-cart', findActiveShoppingCartRoute);
       app.get('/quotes', findQuotesRoute);
       app.get('/proposal/:quoteId', findProposalByQuoteRoute);
+      app.patch('/shopping-cart/deactivate/:shoppingCartId', deactivateShoppingCartRoute);
       app.use((error, req, res, next) => {
         return res.status(500).send({ message: error.message });
       });
