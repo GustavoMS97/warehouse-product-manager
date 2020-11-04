@@ -55,6 +55,7 @@ const { processMovementsFactory } = require('./domain/use-cases/process-movement
 const { moveProductFactory } = require('./domain/use-cases/move-product');
 const { createOrUpdateShoppingCartFactory } = require('./domain/use-cases/create-or-update-shopping-cart');
 const { createProposalAndProposalProductFactory } = require('./domain/use-cases/create-proposal-and-product-proposal');
+const { processAbandonmentShoppingCartFactory } = require('./domain/use-cases/process-abandonment-shopping-cart');
 
 const { fileTypeMiddlewareFactory } = require('./infra/api/middlewares/file-type-middleware');
 const { requestAuthenticationMiddlewareFactory } = require('./infra/api/middlewares/request-authentication');
@@ -127,8 +128,13 @@ const application = async () => {
     const { Checkout } = CheckoutFactory({ mongoose });
     const { PaymentInfo } = PaymentInfoFactory({ mongoose });
 
-    const { cronjob } = CronJobFactory({ ENV, ShoppingCart });
-    const { cronJobConfig } = cronjob({ timeExecuteJob: ENV.TIME_EXECUTE_JOB });
+    const { processAbandonmentShoppingCart } = processAbandonmentShoppingCartFactory({ ENV, ShoppingCart });
+
+    const { cronjob } = CronJobFactory({ ENV });
+    const { cronJobConfig } = cronjob({
+      timeExecuteJob: ENV.TIME_EXECUTE_JOB,
+      onJobExecution: processAbandonmentShoppingCart,
+    });
 
     const { getCSVContentInMatrix } = getCSVContentInMatrixFactory();
     const { validateCSVHeaders } = validateCSVHeadersFactory({ getCSVContentInMatrix });
