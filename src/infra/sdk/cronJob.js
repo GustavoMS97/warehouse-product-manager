@@ -1,15 +1,12 @@
 const CronJob = require('cron').CronJob;
 
-const { processAbandonmentShoppingCartFactory } = require('./../../domain/use-cases/process-abandonment-shopping-cart');
-const { processAbandonmentShoppingCart } = processAbandonmentShoppingCartFactory();
-
-exports.CronJobFactory = ({ ENV, ShoppingCart } = {}) => {
+exports.CronJobFactory = ({ ENV } = {}) => {
   return {
-    cronjob: ({ timeExecuteJob } = {}) => {
+    cronjob: ({ timeExecuteJob, onJobExecution } = {}) => {
       const job = new CronJob(
         timeExecuteJob,
         function () {
-          processAbandonmentShoppingCart(ENV, ShoppingCart);
+          onJobExecution();
         },
         null,
         true,
