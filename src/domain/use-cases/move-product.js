@@ -68,7 +68,7 @@ exports.moveProductFactory = ({
             console.log(new Error('Lista de fornecedores não foi atualizada com sucesso'));
           }
         }
-        await createProductMovement({
+        const { productMovement } = await createProductMovement({
           quantity: productMovementQuantity,
           price: productMovementPrice,
           document: document._id,
@@ -76,7 +76,7 @@ exports.moveProductFactory = ({
           type: productMovementType,
         });
         const { response } = await processMovements({ productId: product._id });
-        return { success: response };
+        return { success: response, productMovement };
       } catch (moveProductError) {
         console.log(moveProductError);
         throw new Error('Não foi possível mover o produto!');
