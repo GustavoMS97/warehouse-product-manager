@@ -48,11 +48,14 @@ const { findProposalByQuotesFactory } = require('./domain/services/find-proposal
 const { createQuotesFactory } = require('./domain/services/create-quotes');
 const { createProposalFactory } = require('./domain/services/create-proposal');
 const { createProposalProductFactory } = require('./domain/services/create-proposal-product');
+const { createPaymentInfoFactory } = require('./domain/services/create-paymentInfo');
+const { findPaymentInfoByOwnerFactory } = require('./domain/services/find-paymentInfo-by-owner');
 
 const { processMovementsFactory } = require('./domain/use-cases/process-movements');
 const { moveProductFactory } = require('./domain/use-cases/move-product');
 const { createOrUpdateShoppingCartFactory } = require('./domain/use-cases/create-or-update-shopping-cart');
 const { createProposalAndProposalProductFactory } = require('./domain/use-cases/create-proposal-and-product-proposal');
+const { processAbandonmentShoppingCartFactory } = require('./domain/use-cases/process-abandonment-shopping-cart');
 
 const { fileTypeMiddlewareFactory } = require('./infra/api/middlewares/file-type-middleware');
 const { requestAuthenticationMiddlewareFactory } = require('./infra/api/middlewares/request-authentication');
@@ -82,6 +85,8 @@ const { findCategoryRouteFactory } = require('./infra/api/routes/find-category-r
 const { findQuotesRouteFactory } = require('./infra/api/routes/find-quotes-route');
 const { createQuotesRouteFactory } = require('./infra/api/routes/create-quotes-route');
 const { findProposalByQuoteRouteFactory } = require('./infra/api/routes/find-proposal-by-quotes-route');
+const { createPaymentInfoRouteFactory } = require('./infra/api/routes/create-paymentinfo-route');
+const { findPaymentInfoByOwnerRouteFactory } = require('./infra/api/routes/find-paymentinfo-by-owner-route');
 
 const { routerFactory } = require('./infra/api/router');
 const { moveProductFileRouteFactory } = require('./infra/api/routes/move-product-file-route');
@@ -123,8 +128,13 @@ const application = async () => {
     const { Checkout } = CheckoutFactory({ mongoose });
     const { PaymentInfo } = PaymentInfoFactory({ mongoose });
 
-    const { cronjob } = CronJobFactory({ ENV, ShoppingCart });
-    const { cronJobConfig } = cronjob({ timeExecuteJob: ENV.TIME_EXECUTE_JOB });
+    const { processAbandonmentShoppingCart } = processAbandonmentShoppingCartFactory({ ENV, ShoppingCart });
+
+    const { cronjob } = CronJobFactory({ ENV });
+    const { cronJobConfig } = cronjob({
+      timeExecuteJob: ENV.TIME_EXECUTE_JOB,
+      onJobExecution: processAbandonmentShoppingCart,
+    });
 
     const { getCSVContentInMatrix } = getCSVContentInMatrixFactory();
     const { validateCSVHeaders } = validateCSVHeadersFactory({ getCSVContentInMatrix });
@@ -165,6 +175,8 @@ const application = async () => {
       createProposal,
       createProposalProduct,
     });
+    const { createPaymentInfo } = createPaymentInfoFactory({ PaymentInfo });
+    const { findPaymentInfoByOwner } = findPaymentInfoByOwnerFactory({ PaymentInfo });
 
     const { findActiveShoppingCart } = findActiveShoppingCartFactory({ ShoppingCart });
     const { findMinimumStockProduct } = findMinimumStockProductFactory({ Product });
@@ -221,6 +233,12 @@ const application = async () => {
       createProposalAndProposalProduct,
     });
     const { deactivateShoppingCartRoute } = deactivateShoppingCartRouteFactory({ deactivateShoppingCart });
+    const { createPaymentInfoRoute } = createPaymentInfoRouteFactory({
+      createPaymentInfo,
+    });
+    const { findPaymentInfoByOwnerRoute } = findPaymentInfoByOwnerRouteFactory({
+      findPaymentInfoByOwner,
+    });
 
     const { apiRouter } = routerFactory({
       createBranchRoute,
@@ -251,6 +269,8 @@ const application = async () => {
       findProposalByQuoteRoute,
       createProposalAndProposalProductRoute,
       deactivateShoppingCartRoute,
+      createPaymentInfoRoute,
+      findPaymentInfoByOwnerRoute,
     });
 
     cronJobConfig.job.start();

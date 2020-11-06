@@ -5,7 +5,7 @@ exports.PaymentInfoFactory = ({ mongoose } = {}) => {
   const PaymentInfoSchema = new mongoose.Schema({
     owner: { type: mongoose.Schema.Types.ObjectId, required: true },
     cardHash: { type: String },
-    bansklipNumber: { type: String },
+    bankslipNumber: { type: String },
     createdAt: {
       type: Date,
       default: Date.now,

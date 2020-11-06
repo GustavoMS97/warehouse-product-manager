@@ -29,6 +29,8 @@ exports.routerFactory = ({
   findProposalByQuoteRoute,
   createProposalAndProposalProductRoute,
   deactivateShoppingCartRoute,
+  createPaymentInfoRoute,
+  findPaymentInfoByOwnerRoute,
 } = {}) => {
   return {
     /**
@@ -43,6 +45,7 @@ exports.routerFactory = ({
       app.post('/campaing', createCampaingRoute);
       app.post('/quote', createQuotesRoute);
       app.post('/proposal', createProposalAndProposalProductRoute);
+      app.post('/paymentInfo', createPaymentInfoRoute);
       app.post(
         '/move-product-file',
         multer(productMovementMulterConfig).single('file'),
@@ -55,6 +58,7 @@ exports.routerFactory = ({
       app.get('/product/:warehouseId', findProductByWareHouseRoute);
       app.get('/product-movement/:productId', findProductMovementByProductRoute);
       app.get('/product-movement-file/:productId', findProductMovementFileByProductRoute);
+      app.get('/paymentInfo', findPaymentInfoByOwnerRoute);
 
       app.use(requestAuthenticationMiddleware);
       app.post('/shopping-cart', createOrUpdateShoppingCartRoute);
