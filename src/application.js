@@ -50,12 +50,14 @@ const { createProposalFactory } = require('./domain/services/create-proposal');
 const { createProposalProductFactory } = require('./domain/services/create-proposal-product');
 const { createPaymentInfoFactory } = require('./domain/services/create-paymentInfo');
 const { findPaymentInfoByOwnerFactory } = require('./domain/services/find-paymentInfo-by-owner');
+const { findShoppingCartByIdFactory } = require('./domain/services/find-shopping-cart-by-id');
 
 const { processMovementsFactory } = require('./domain/use-cases/process-movements');
 const { moveProductFactory } = require('./domain/use-cases/move-product');
 const { createOrUpdateShoppingCartFactory } = require('./domain/use-cases/create-or-update-shopping-cart');
 const { createProposalAndProposalProductFactory } = require('./domain/use-cases/create-proposal-and-product-proposal');
 const { processAbandonmentShoppingCartFactory } = require('./domain/use-cases/process-abandonment-shopping-cart');
+const { processCheckoutFactory } = require('./domain/use-cases/process-checkout');
 
 const { fileTypeMiddlewareFactory } = require('./infra/api/middlewares/file-type-middleware');
 const { requestAuthenticationMiddlewareFactory } = require('./infra/api/middlewares/request-authentication');
@@ -101,6 +103,7 @@ const {
 } = require('./infra/api/routes/create-proposal-and-proposal-product-route');
 const { deactivateShoppingCartFactory } = require('./domain/use-cases/deactivate-shopping-cart');
 const { deactivateShoppingCartRouteFactory } = require('./infra/api/routes/deactivate-shopping-cart-route');
+const { processCheckoutRouteFactory } = require('./infra/api/routes/process-checkout-route');
 
 const application = async () => {
   try {
@@ -177,6 +180,7 @@ const application = async () => {
     });
     const { createPaymentInfo } = createPaymentInfoFactory({ PaymentInfo });
     const { findPaymentInfoByOwner } = findPaymentInfoByOwnerFactory({ PaymentInfo });
+    const { findShoppingCartById } = findShoppingCartByIdFactory({ ShoppingCart });
 
     const { findActiveShoppingCart } = findActiveShoppingCartFactory({ ShoppingCart });
     const { findMinimumStockProduct } = findMinimumStockProductFactory({ Product });
@@ -192,6 +196,12 @@ const application = async () => {
       processMovements,
     });
     const { deactivateShoppingCart } = deactivateShoppingCartFactory({ ShoppingCart });
+    const { processCheckout } = processCheckoutFactory({
+      Checkout,
+      moveProduct,
+      processMovements,
+      findShoppingCartById,
+    });
 
     const { fileTypeMiddleware: csvFileTypeMiddleware } = fileTypeMiddlewareFactory({ expectedType: 'text/csv' });
     const { requestAuthenticationMiddleware } = requestAuthenticationMiddlewareFactory();
@@ -239,6 +249,7 @@ const application = async () => {
     const { findPaymentInfoByOwnerRoute } = findPaymentInfoByOwnerRouteFactory({
       findPaymentInfoByOwner,
     });
+    const { processCheckoutRoute } = processCheckoutRouteFactory({ processCheckout, createPaymentInfo });
 
     const { apiRouter } = routerFactory({
       createBranchRoute,
@@ -271,6 +282,7 @@ const application = async () => {
       deactivateShoppingCartRoute,
       createPaymentInfoRoute,
       findPaymentInfoByOwnerRoute,
+      processCheckoutRoute,
     });
 
     cronJobConfig.job.start();

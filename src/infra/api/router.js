@@ -31,6 +31,7 @@ exports.routerFactory = ({
   deactivateShoppingCartRoute,
   createPaymentInfoRoute,
   findPaymentInfoByOwnerRoute,
+  processCheckoutRoute,
 } = {}) => {
   return {
     /**
@@ -71,6 +72,7 @@ exports.routerFactory = ({
       app.get('/quotes', findQuotesRoute);
       app.get('/proposal/:quoteId', findProposalByQuoteRoute);
       app.patch('/shopping-cart/deactivate/:shoppingCartId', deactivateShoppingCartRoute);
+      app.post('/checkout', processCheckoutRoute);
       app.use((error, req, res, next) => {
         return res.status(500).send({ message: error.message });
       });
