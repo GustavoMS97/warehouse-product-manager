@@ -8,8 +8,8 @@ exports.findRecommendedProductByIdRouteFactory = ({ findRecommendedProductById }
         if (!ObjectId.isValid(id)) {
           throw new Error('Usuário inválido!');
         }
-        const { checkout } = await findRecommendedProductById({ id });
-        return res.status(200).send({ checkout });
+        const { productsRecommended } = await findRecommendedProductById({ id });
+        return res.status(200).send({ productsRecommended });
       } catch (findRecommendedProductByIdRouteError) {
         console.log(findRecommendedProductByIdRouteError);
         next(findRecommendedProductByIdRouteError);
