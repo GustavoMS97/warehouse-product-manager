@@ -31,6 +31,7 @@ exports.routerFactory = ({
   deactivateShoppingCartRoute,
   createPaymentInfoRoute,
   findPaymentInfoByOwnerRoute,
+  findRecommendedProductByIdRoute,
 } = {}) => {
   return {
     /**
@@ -59,6 +60,7 @@ exports.routerFactory = ({
       app.get('/product-movement/:productId', findProductMovementByProductRoute);
       app.get('/product-movement-file/:productId', findProductMovementFileByProductRoute);
       app.get('/paymentInfo', findPaymentInfoByOwnerRoute);
+      app.get('/recommendedProduct', findRecommendedProductByIdRoute);
 
       app.use(requestAuthenticationMiddleware);
       app.post('/shopping-cart', createOrUpdateShoppingCartRoute);

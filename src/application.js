@@ -56,6 +56,7 @@ const { moveProductFactory } = require('./domain/use-cases/move-product');
 const { createOrUpdateShoppingCartFactory } = require('./domain/use-cases/create-or-update-shopping-cart');
 const { createProposalAndProposalProductFactory } = require('./domain/use-cases/create-proposal-and-product-proposal');
 const { processAbandonmentShoppingCartFactory } = require('./domain/use-cases/process-abandonment-shopping-cart');
+const { findRecommendedProductByIdFactory } = require('./domain/use-cases/find-recommendad-product-by-id');
 
 const { fileTypeMiddlewareFactory } = require('./infra/api/middlewares/file-type-middleware');
 const { requestAuthenticationMiddlewareFactory } = require('./infra/api/middlewares/request-authentication');
@@ -87,6 +88,7 @@ const { createQuotesRouteFactory } = require('./infra/api/routes/create-quotes-r
 const { findProposalByQuoteRouteFactory } = require('./infra/api/routes/find-proposal-by-quotes-route');
 const { createPaymentInfoRouteFactory } = require('./infra/api/routes/create-paymentinfo-route');
 const { findPaymentInfoByOwnerRouteFactory } = require('./infra/api/routes/find-paymentinfo-by-owner-route');
+const { findRecommendedProductByIdRouteFactory } = require('./infra/api/routes/find-recommended-product-by-id-route');
 
 const { routerFactory } = require('./infra/api/router');
 const { moveProductFileRouteFactory } = require('./infra/api/routes/move-product-file-route');
@@ -181,6 +183,7 @@ const application = async () => {
     const { findActiveShoppingCart } = findActiveShoppingCartFactory({ ShoppingCart });
     const { findMinimumStockProduct } = findMinimumStockProductFactory({ Product });
     const { findCategory } = findCategoryFactory({ Category });
+    const { findRecommendedProductById } = findRecommendedProductByIdFactory({ Checkout });
 
     const { processMovements } = processMovementsFactory({ ProductMovement, Product });
     const { moveProduct } = moveProductFactory({
@@ -239,6 +242,7 @@ const application = async () => {
     const { findPaymentInfoByOwnerRoute } = findPaymentInfoByOwnerRouteFactory({
       findPaymentInfoByOwner,
     });
+    const { findRecommendedProductByIdRoute } = findRecommendedProductByIdRouteFactory({ findRecommendedProductById });
 
     const { apiRouter } = routerFactory({
       createBranchRoute,
@@ -271,6 +275,7 @@ const application = async () => {
       deactivateShoppingCartRoute,
       createPaymentInfoRoute,
       findPaymentInfoByOwnerRoute,
+      findRecommendedProductByIdRoute,
     });
 
     cronJobConfig.job.start();
