@@ -32,6 +32,7 @@ exports.routerFactory = ({
   createPaymentInfoRoute,
   findPaymentInfoByOwnerRoute,
   findRecommendedProductByIdRoute,
+  processCheckoutRoute,
 } = {}) => {
   return {
     /**
@@ -60,11 +61,11 @@ exports.routerFactory = ({
       app.get('/product-movement/:productId', findProductMovementByProductRoute);
       app.get('/product-movement-file/:productId', findProductMovementFileByProductRoute);
       app.get('/paymentInfo', findPaymentInfoByOwnerRoute);
-      app.get('/recommendedProduct', findRecommendedProductByIdRoute);
 
       app.use(requestAuthenticationMiddleware);
       app.post('/shopping-cart', createOrUpdateShoppingCartRoute);
       app.get('/campaing', findCampaingRoute);
+      app.get('/recommendedProduct', findRecommendedProductByIdRoute);
       app.get('/all-campaing', findAllCampaingRoute);
       app.get('/all-product', findAllProductRoute);
       app.get('/category', findCategoryRoute);
@@ -73,6 +74,7 @@ exports.routerFactory = ({
       app.get('/quotes', findQuotesRoute);
       app.get('/proposal/:quoteId', findProposalByQuoteRoute);
       app.patch('/shopping-cart/deactivate/:shoppingCartId', deactivateShoppingCartRoute);
+      app.post('/checkout', processCheckoutRoute);
       app.use((error, req, res, next) => {
         return res.status(500).send({ message: error.message });
       });

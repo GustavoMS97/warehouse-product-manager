@@ -1,10 +1,10 @@
 exports.createPaymentInfoFactory = ({ PaymentInfo } = {}) => {
   return {
-    createPaymentInfo: async ({ owner, cardhash, bankslipNumber } = {}) => {
+    createPaymentInfo: async ({ owner, cardHash, bankslipNumber } = {}) => {
       try {
         const paymentInfo = await PaymentInfo.create({
           owner,
-          cardhash,
+          cardHash,
           bankslipNumber,
         });
         return { paymentInfo };
