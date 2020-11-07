@@ -23,14 +23,20 @@ exports.processCheckoutRouteFactory = ({ processCheckout, createPaymentInfo } = 
           throw envVarsValidationError;
         }
         const { cardHash, isBankslip, shoppingCartId } = reqBodyValues;
-        let paymentInfo;
+        let paymentInfoResponse;
         if (isBankslip) {
           const bankslipNumber = randomstring.generate({ charset: 'alphanumeric' });
-          paymentInfo = await createPaymentInfo({ owner: id, bankslipNumber });
+          const { paymentInfo } = await createPaymentInfo({ owner: id, bankslipNumber });
+          paymentInfoResponse = paymentInfo;
         } else {
-          paymentInfo = await createPaymentInfo({ owner: id, cardHash });
+          const { paymentInfo } = await createPaymentInfo({ owner: id, cardHash });
+          paymentInfoResponse = paymentInfo;
         }
-        const { checkout } = await processCheckout({ shoppingCartId, paymentInfoId: paymentInfo._id, owner: id });
+        const { checkout } = await processCheckout({
+          shoppingCartId,
+          paymentInfoId: paymentInfoResponse._id,
+          owner: id,
+        });
         if (checkout) {
           return res.status(201).send(checkout);
         } else {
