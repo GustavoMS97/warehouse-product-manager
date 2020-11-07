@@ -5,7 +5,7 @@ exports.processCheckoutFactory = ({ Checkout, moveProduct, findShoppingCartById,
   return {
     processCheckout: async ({ shoppingCartId, paymentInfoId, owner } = {}) => {
       try {
-        const shoppingCart = await findShoppingCartById({ id: shoppingCartId });
+        const { shoppingCart } = await findShoppingCartById({ id: shoppingCartId });
         const { productsQuantity } = shoppingCart;
         if (Array.isArray(productsQuantity) && productsQuantity.length > 0) {
           const productMovements = [];
@@ -20,12 +20,12 @@ exports.processCheckoutFactory = ({ Checkout, moveProduct, findShoppingCartById,
                 productCode: product.code,
                 productUnitOfMeasurement: product.unitOfMeasurement,
                 productProvider: '-',
-                productWarehouse: product.warehouse,
-                productCategory: product.category,
-                productMinimumInStock: product.minimumInStock,
+                productWarehouse: product.warehouse.toString(),
+                productCategory: product.category.toString(),
+                productMinimumInStock: product.minimumInStock || 0,
                 productMovementQuantity: quantity,
                 productMovementPrice: product.calculatedPrice,
-                productMovementType: PRODUCT_MOVEMENT_TYPE.SALE,
+                productMovementType: PRODUCT_MOVEMENT_TYPE.SALE.id,
               },
             });
             if (!success) {
